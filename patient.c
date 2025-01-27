@@ -8,8 +8,8 @@
 struct pacient
 {
     int id;
-    char* cpf;
-    char* name;
+    char cpf[15];
+    char name[100];
     int age;
     struct tm* data;
 };
@@ -35,18 +35,27 @@ LinkedList *ll_create()
     return l;                                                 // Return a pointer to the newly created list.
 }
 
-Pacient *new_pacient(int id, char* cpf, char* name, int age)
+Pacient *new_pacient(int id, int age)
 {
     Pacient *patient = (Pacient*)malloc(sizeof(Pacient));
     assert(patient != NULL); // Ensure memory allocation was successful
 
     patient->id = id;
-    patient->cpf = cpf;
-    patient->name = name;
+        // patient->cpf = cpf;
+
+    char *name_patient = {"heitor"}; // Generate a name for the patient 
+    strncpy(patient->name, name_patient, sizeof(patient->name) - 1); // Copy the name to the patient structure
+    patient->name[sizeof(patient->name) - 1] = '\0';
     patient->age = age;
    
     return patient;
 }
+
+void print_patient(Pacient *patient)
+{
+   printf("Patient ID: %d, Name: %s\n", patient->id, patient->name); // Print patient details
+}
+
 // Function to check whether the linked list is empty.
 int ll_is_empty(LinkedList *l)
 {
@@ -62,6 +71,10 @@ void ll_insert(LinkedList* l, Pacient* pacients)
     l->first = node;                                       // Update the 'first' pointer to point to the new node.
 }
 
+int get_id(Pacient *pacient)
+{
+    return pacient->id;
+}
 // void ll_print(LinkedList *l)
 // {
 //     for (ListNode *p = l->first; p != NULL; p = p->next)

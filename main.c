@@ -4,22 +4,24 @@
 #include <string.h>
 #include <time.h>
 
+int id = 1;
+
 int main(void)
 {   
-    char cpf[15];
-    char name[100];
+    char *cpf;
+    char *name;
     int age;
     
-    // LinkedList* list;
-    const char *filename = "bd_paciente.csv";
+    // // LinkedList* list;
+    // const char *filename = "bd_paciente.csv";
 
-    LinkedList *list = ll_create();
+    // LinkedList *list = ll_create();
 
-    FILE *file = fopen(filename, "w");
-    if (file == NULL){
-        printf("ERRO.\n");
-    }
-    fprintf(file,"ID,CPF,Nome,Idade,Data_Cadastro\n");
+    // FILE *file = fopen(filename, "w");
+    // if (file == NULL){
+    //     printf("ERRO.\n");
+    // }
+    // fprintf(file,"ID,CPF,Nome,Idade,Data_Cadastro\n");
 
     char opcao;
 
@@ -55,16 +57,21 @@ int main(void)
     }
     if (opcao == '4')
     {
-
-        printf("Para inserir um novo registro, digite os valores para os campos CPF (apenas dígitos), Nome, Idade e Data_Cadastro:\n");
-        int id = id++;
-        scanf("%s",&cpf);
-        scanf("%s",&name);
-        scanf("%d",&age);
-        Pacient* patient = new_pacient(id, cpf, name, age);
         
-        printf("%d,%s,%s,%d,%d\n", patient->id, patient->cpf, patient->name, patient->age, patient->data->tm_year);
-    
+        int age = 22;
+        printf("DEBUG 1\n");
+        Pacient* patient = new_pacient(id, age);
+        printf("%d\n", get_id(patient));
+        print_patient(patient);
+        
+        id++;
+        age = 24;
+        Pacient* patient2 = new_pacient(id, age);
+        printf("DEBUG 2\n");        
+        printf("%d\n", get_id(patient2));
+        print_patient(patient2);
+        
+        
         //fprintf(file, "%d,%s,%s,%d,%d\n", patient->id, patient->cpf, patient->name, patient->age, patient->data->tm_year);
     }
     if (opcao == '5')

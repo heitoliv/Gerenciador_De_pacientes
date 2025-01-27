@@ -8,9 +8,9 @@ typedef struct list_node ListNode; // Represents a node in the linked list
 typedef struct pacient Pacient;
 
 // Create an empty linked list and return a pointer to it
-LinkedList *ll_create();
+LinkedList* ll_create();
 
-Pacient* new_pacient(int id, char* cpf, char* name, int age);
+Pacient* new_pacient(int id, int age);
 
 // Insert an element at the beginning of the linked list
 void ll_insert(LinkedList *l, Pacient *pacients);
@@ -20,5 +20,9 @@ int ll_is_empty(LinkedList *l);
 
 // Display all elements of the linked list
 void ll_print(LinkedList *l);
+
+int get_id(Pacient *pacient);
+
+void print_patient(Pacient *patient);
 
 #endif
