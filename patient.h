@@ -10,7 +10,7 @@ typedef struct pacient Pacient;
 // Create an empty linked list and return a pointer to it
 LinkedList* ll_create();
 
-Pacient* new_pacient(int id, int age);
+Pacient* new_pacient(int id);
 
 // Insert an element at the beginning of the linked list
 void ll_insert(LinkedList *l, Pacient *pacients);

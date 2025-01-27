@@ -7,11 +7,7 @@
 int id = 1;
 
 int main(void)
-{   
-    char *cpf;
-    char *name;
-    int age;
-    
+{  
     // // LinkedList* list;
     // const char *filename = "bd_paciente.csv";
 
@@ -57,21 +53,10 @@ int main(void)
     }
     if (opcao == '4')
     {
-        
-        int age = 22;
-        printf("DEBUG 1\n");
-        Pacient* patient = new_pacient(id, age);
-        printf("%d\n", get_id(patient));
+        printf("Para inserir um novo registro, digite os valores para os campos CPF(apenas digitos), Nome, Idade, e Data_Cadastro:\n");
+        Pacient* patient = new_pacient(id);
         print_patient(patient);
-        
-        id++;
-        age = 24;
-        Pacient* patient2 = new_pacient(id, age);
-        printf("DEBUG 2\n");        
-        printf("%d\n", get_id(patient2));
-        print_patient(patient2);
-        
-        
+
         //fprintf(file, "%d,%s,%s,%d,%d\n", patient->id, patient->cpf, patient->name, patient->age, patient->data->tm_year);
     }
     if (opcao == '5')
@@ -82,9 +67,6 @@ int main(void)
     {
         /* Sair */
     }
-    
-    
-    
     
 
     return 0; // Return 0 to indicate successful program execution.
