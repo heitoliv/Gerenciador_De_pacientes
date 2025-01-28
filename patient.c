@@ -38,8 +38,7 @@ LinkedList *ll_create()
 char* get_cpf()
 {
     char cpf[12];
-    printf("Digite seu CPF: \n");
-    scanf("%11s", cpf);
+    scanf("%s[^\n]", cpf);
     char *cpf_ptr = (char *)malloc((strlen(cpf) + 1) * sizeof(char));
     if (cpf_ptr != NULL) {
         strcpy(cpf_ptr, cpf);
@@ -50,19 +49,21 @@ char* get_cpf()
 char* get_name()
 {
     char name[100];
-    printf("Digite seu nome: \n");
-    scanf("%99s", name);
+
+    scanf(" %99[^\n]", name);
+
     char *name_ptr = (char *)malloc((strlen(name) + 1) * sizeof(char));
+    
     if (name_ptr != NULL) {
-        strcpy(name_ptr, name);
+        strcpy(name_ptr, name); // Copia a string para o espaço alocado
     }
+    
     return name_ptr; 
 }
 
 int get_age()
 {
     int age_pacient;
-    printf("Digite a sua idade:\n");
     scanf("%d", &age_pacient);
 
     return age_pacient;
@@ -70,11 +71,10 @@ int get_age()
 
 Pacient *new_pacient(int id)
 {
-
     Pacient *patient = (Pacient*)malloc(sizeof(Pacient));
     assert(patient != NULL); // Ensure memory allocation was successful
 
-    patient->id = id;
+    patient->id = id; //Get id to the patient
 
     char* cpf_patient = get_cpf(); // Generate a cpf for the patient 
     strncpy(patient->cpf, cpf_patient, sizeof(patient->cpf) - 1); // Copy the cpf to the patient structure
@@ -86,13 +86,17 @@ Pacient *new_pacient(int id)
 
     int age_patient = get_age(); 
     patient->age = age_patient;
+
+    time_t data_cadastro;
+    time(&data_cadastro);
+    patient->data = localtime(&data_cadastro);
    
     return patient;
 }
 
 void print_patient(Pacient *patient)
 {
-   printf("Patient ID: %d, CPF: %s, Name: %s, Idade: %d\n", patient->id, patient->cpf, patient->name, patient->age); // Print patient details
+   printf("Patient ID: %d, CPF: %s, Name: %s, Idade: %d, Data_Cadastro: %d-%d-%d\n", patient->id, patient->cpf, patient->name, patient->age,patient->data->tm_year+1900,patient->data->tm_mon+1,patient->data->tm_mday); // Print patient details
 }
 
 // Function to check whether the linked list is empty.
@@ -102,10 +106,10 @@ int ll_is_empty(LinkedList *l)
 }
 
 // Function to insert an element at the beginning of the linked list.
-void ll_insert(LinkedList* l, Pacient* pacients)
+void ll_insert(LinkedList* l, Pacient* patient)
 {
     ListNode *node = (ListNode *)malloc(sizeof(ListNode)); // Allocate memory for a new node.
-    node->info = pacients;                                        // Set the 'info' field of the new node to the provided value.
+    node->info = patient;                                        // Set the 'info' field of the new node to the provided value.
     node->next = l->first;                                 // Make the new node point to the current first node.
     l->first = node;                                       // Update the 'first' pointer to point to the new node.
 }
@@ -114,11 +118,11 @@ int get_id(Pacient *pacient)
 {
     return pacient->id;
 }
-// void ll_print(LinkedList *l)
-// {
-//     for (ListNode *p = l->first; p != NULL; p = p->next)
-//     {
-//         printf("%d ", p->info); // Print the 'info' field of each node.
-//     }
-//     printf("\n"); // Print a newline character to separate the output.
-// }
+void ll_print(LinkedList *l)
+{
+    for (ListNode *p = l->first; p != NULL; p = p->next)
+    {
+        print_patient(p->info);
+    }
+    printf("\n"); // Print a newline character to separate the output.
+}
