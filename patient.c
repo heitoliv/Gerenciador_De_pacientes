@@ -5,39 +5,41 @@
 #include <time.h>
 #include <assert.h>
 
+//Definição da estrutura que representa o paciente
 struct pacient
 {
-    int id;
-    char cpf[15];
-    char name[100];
-    char age[5];
-    char year[20];
+    int id;             // Variável responsável pelo ID do paciente.
+    char cpf[15];       // Variável responsável pelo CPF do paciente.
+    char name[100];     // Variável responsável pelo nome do paciente.
+    char age[5];        // Variável responsável pela idade do paciente
+    char year[20];      // Variável responsável pela data de cadastro do paciente. **MUDAR NOME DA VARIÁVEL
 };
 
-// Define a structure for the linked list.
+// Definição da estrutura de uma lista encadeada.
 struct list
 {
-    ListNode *first; // A pointer to the first node in the linked list.
+    ListNode *first; // Variável que prepresenta o ponteiro para o primeiro nó da lista.
 };
 
-// Define a structure for a node in the linked list.
+// Definição da estrutura para um nó na lista encadeada. 
 struct list_node
 {
-    Pacient* info;       // An integer value stored in the node.
-    ListNode* next; // A pointer to the next node in the linked list.
+    Pacient* info;      // Ponteiro que aponta para a estrutura do paciente.
+    ListNode* next;     // Ponteiro que aponta para o próximo nó da lista.
 };
 
-// Function to create an empty linked list and return a pointer to it.
+// Função responsável pela criação de uma lista encadeada vazia e retorna um ponteiro.
 LinkedList *ll_create()
 {
-    LinkedList* l = (LinkedList *)malloc(sizeof(LinkedList)); // Allocate memory for the list structure.
-    l->first = NULL;                                          // Initialize the 'first' pointer to NULL, indicating an empty list.
-    return l;  
-}                                               // Return a pointer to the newly created list.
+    LinkedList* l = (LinkedList *)malloc(sizeof(LinkedList)); // Alocação de memória para a estrutura da lista encadeada.
+    l->first = NULL;                                          // Inicializando o ponteiro 'first' para NULL, indicando que uma lista vazia.
+    return l;                                                 // Retorna um ponteiro para a lista recém-criada.   
+}                                               
 
+//Função responsável pela formatação da string CPF (Ex: 12345678901 -> 123.456.789-01).
 void formatar_cpf(Pacient *patient) {
-    char format_cpf[15];
-    int j = 0; // Índice para o format_cpf
+    char format_cpf[15];    //String que armazena o cpf formatado.
+    int j = 0;              // Índice para a variável format_cpf.
     
     for (int i = 0; i < 11; i++) {
         format_cpf[j++] = patient->cpf[i];
@@ -48,27 +50,28 @@ void formatar_cpf(Pacient *patient) {
         }
     }
     format_cpf[j] = '\0';
-    strcpy(patient->cpf, format_cpf);
+
+    strcpy(patient->cpf, format_cpf);  // Copia a string contida em "format_cpf" para o campo "cpf" da estrutura do paciente.
 }
 
-// Função para criar um novo paciente
+// Função responsável para a criação de um novo paciente.
 Pacient* new_pacient(int id) {
     Pacient* patient = (Pacient*)malloc(sizeof(Pacient));
-    assert(patient != NULL);  // Garante que a alocação de memória foi bem-sucedida
+    assert(patient != NULL);            // Garante que a alocação de memória foi bem-sucedida
 
     // Atribui o ID ao paciente
     patient->id = id;
 
     // Entrada do CPF
     printf("Digite o CPF: ");
-    scanf("%11s", patient->cpf);  // Limita a entrada para evitar buffer overflow
-    getchar();  // Consumir o '\n' do buffer
+    scanf("%11s", patient->cpf);        // Limita a entrada para evitar buffer overflow
+    getchar();                          // Consumir o '\n' do buffer
     formatar_cpf(patient);
 
     // Entrada do Nome
     printf("Digite o Nome: ");
     fgets(patient->name, sizeof(patient->name), stdin);
-    patient->name[strcspn(patient->name, "\n")] = 0;  // Remove o '\n'
+    patient->name[strcspn(patient->name, "\n")] = 0;    // Remove o '\n'
 
     // Entrada da Idade
     printf("Digite a Idade: ");
@@ -84,60 +87,61 @@ Pacient* new_pacient(int id) {
     return patient;
 }
 
+//Função responsável pela funcionalidade de atualizar o paciente.
 Pacient* update_patient(LinkedList *l, int id)
 {
-    // int ll_is_in(LinkedList *l, int v);
     
     Pacient* patient = (Pacient*)malloc(sizeof(Pacient));
     assert(patient != NULL);  // Garante que a alocação de memória foi bem-sucedida
 
     printf("Digite o novo valor para os campos CPF (apenas dígitos), Nome, Idade e Data_Cadastro (para manter o valor atual de um campo, digite '-'):\n");
     
-    patient = ll_is_in(l,id);
+    patient = ll_is_in(l,id);                //Busca e seleciona o paciente na lista tendo como critério o ID fornecido.
     if (patient != NULL){
         char new_cpf[15];
         char new_name[100];
         char new_age[5];
         char new_year[20];
 
-        scanf("%11s", new_cpf);  // Limita a entrada para evitar buffer overflow
-        getchar();  // Consumir o '\n' do buffer
-        if (strcmp(new_cpf, "-") != 0)
+        scanf("%11s", new_cpf);              // Entrada de dados do novo cpf para atualização.
+        getchar();                           // Consume o '\n'(Limpeza do Buffer)
+        if (ll_cpf_is_in(l,new_cpf) == 0)    // Verificação com o novo CPF dado e informa se já existe.
+        {
+            printf("CPF JA EXISTENTE.");
+        }
+        if (strcmp(new_cpf, "-") != 0)          // Verificação caso o usuário deseja ou não atualizar o CPF do paciente.
         {
             strcpy(patient->cpf, new_cpf);
             formatar_cpf(patient);
         }
-        // formatar_cpf(patient);
 
-        // Entrada do Nome
-        fgets(new_name, sizeof(new_name), stdin);
-        new_name[strcspn(new_name, "\n")] = 0;  // Remove o '\n'
-        if (strcmp(new_name, "-") != 0)
+        fgets(new_name, sizeof(new_name), stdin);       // Entrada de dados do novo cpf para atualização.
+        new_name[strcspn(new_name, "\n")] = 0;          // Remove o '\n' (Limpeza do Buffer)
+        if (strcmp(new_name, "-") != 0)                 // Verificação caso o usuário deseja ou não atualizar o nome do paciente.
         {
             strcpy(patient->name, new_name);
         }
 
-        // Entrada da Idade
-        scanf("%4s", new_age);
-        getchar();  // Consumir o '\n' do buffer
+        scanf("%4s", new_age);                          // Entrada de dados da nova idade para atualização.
+        getchar();                                      //Remove o '\n' (Limpeza do Buffer)
         if (strcmp(new_age, "-") != 0)
         {
             strcpy(patient->age, new_age);
         }
 
-        // Entrada do Ano de Cadastro
-        scanf("%11s", new_year);
-        getchar();  // Consumir o '\n' do buffer
+        scanf("%11s", new_year);                        // Entrada de dados da nova data de cadastro para atualização.
+        getchar();                                      // Remove o '\n' (Limpeza do Buffer)
         if (strcmp(new_year, "-") != 0)
         {
             strcpy(patient->year, new_year);
         }
         
-        return patient;
+        return patient;     //Retorno da função update_patient.
     }
-    return NULL;
+    return NULL;            //Retorna NULL caso não encontre nenhum paciente com ID informado pelo usuário.
 }
 
+//Função responsável pela saída de dados formatada dos dados do paciente.
 void print_patient(Pacient *patient)
 {
    printf("%-3s %-15s %-20s %-10s %-12s\n", "ID", "CPF", "Nome", "Idade", "Data_Cadastro"); // Print patient details
@@ -159,6 +163,7 @@ void ll_insert(LinkedList* l, Pacient* patient)
     l->first = node;                                       // Update the 'first' pointer to point to the new node.
 }
 
+//Função que obtem o ID do paciente.
 int get_id(Pacient *pacient)
 {
     return pacient->id;
@@ -217,6 +222,7 @@ void ll_print(LinkedList *l)
         printf("\n"); // Print a newline character to separate the output.
     }
 
+//Função responsável pela impressão da interface do menu.
 void print_menu()
 {
     printf("Healthy Sys \n");
@@ -244,6 +250,7 @@ void ll_free(LinkedList *l)
     free(l); // Free the memory allocated for the list structure itself.
 }
 
+//Função responsável para a contagem dos pacientes no sistema e armazenando no campo correspondente ao ID do paciente.
 int contar_id() {
     char ch;
     int line_count = 0;
