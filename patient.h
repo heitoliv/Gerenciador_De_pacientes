@@ -20,6 +20,8 @@ void formatar_cpf(Pacient *patient);
 
 Pacient* update_patient(LinkedList *l, int id);
 
+int ll_remove(LinkedList *l, int v);
+
 void ll_free(LinkedList *l);
 
 // Insert an element at the beginning of the linked list

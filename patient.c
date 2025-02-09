@@ -87,56 +87,55 @@ Pacient* new_pacient(int id) {
 Pacient* update_patient(LinkedList *l, int id)
 {
     // int ll_is_in(LinkedList *l, int v);
-    char new_cpf[15];
-    char new_name[100];
-    char new_age[5];
-    char new_year[20];
-
-    Pacient* patient_update = (Pacient*)malloc(sizeof(Pacient));
-    assert(patient_update != NULL);  // Garante que a alocação de memória foi bem-sucedida
     
     Pacient* patient = (Pacient*)malloc(sizeof(Pacient));
     assert(patient != NULL);  // Garante que a alocação de memória foi bem-sucedida
 
     printf("Digite o novo valor para os campos CPF (apenas dígitos), Nome, Idade e Data_Cadastro (para manter o valor atual de um campo, digite '-'):\n");
     
-    // Atribui o ID ao paciente
     patient = ll_is_in(l,id);
-    patient_update->id = id;
+    if (patient != NULL){
+        char new_cpf[15];
+        char new_name[100];
+        char new_age[5];
+        char new_year[20];
 
-    scanf("%11s", new_cpf);  // Limita a entrada para evitar buffer overflow
-    getchar();  // Consumir o '\n' do buffer
-    formatar_cpf(patient_update);
-    if (strcmp(new_cpf, "-") != 0)
-    {
-        strcpy(patient->cpf, new_cpf);
+        scanf("%11s", new_cpf);  // Limita a entrada para evitar buffer overflow
+        getchar();  // Consumir o '\n' do buffer
+        if (strcmp(new_cpf, "-") != 0)
+        {
+            strcpy(patient->cpf, new_cpf);
+            formatar_cpf(patient);
+        }
+        // formatar_cpf(patient);
+
+        // Entrada do Nome
+        fgets(new_name, sizeof(new_name), stdin);
+        new_name[strcspn(new_name, "\n")] = 0;  // Remove o '\n'
+        if (strcmp(new_name, "-") != 0)
+        {
+            strcpy(patient->name, new_name);
+        }
+
+        // Entrada da Idade
+        scanf("%4s", new_age);
+        getchar();  // Consumir o '\n' do buffer
+        if (strcmp(new_age, "-") != 0)
+        {
+            strcpy(patient->age, new_age);
+        }
+
+        // Entrada do Ano de Cadastro
+        scanf("%11s", new_year);
+        getchar();  // Consumir o '\n' do buffer
+        if (strcmp(new_year, "-") != 0)
+        {
+            strcpy(patient->year, new_year);
+        }
+        
+        return patient;
     }
-
-    // Entrada do Nome
-    fgets(new_name, sizeof(new_name), stdin);
-    new_name[strcspn(new_name, "\n")] = 0;  // Remove o '\n'
-    if (strcmp(new_name, "-") != 0)
-    {
-        strcpy(patient->name, new_name);
-    }
-
-    // Entrada da Idade
-    scanf("%4s", new_age);
-    getchar();  // Consumir o '\n' do buffer
-    if (strcmp(new_age, "-") != 0)
-    {
-        strcpy(patient->age, new_age);
-    }
-
-    // Entrada do Ano de Cadastro
-    scanf("%11s", new_year);
-    getchar();  // Consumir o '\n' do buffer
-    if (strcmp(new_year, "-") != 0)
-    {
-        strcpy(patient->year, new_year);
-    }
-
-    return patient;
+    return NULL;
 }
 
 void print_patient(Pacient *patient)
@@ -167,13 +166,12 @@ int get_id(Pacient *pacient)
 
 Pacient* ll_is_in(LinkedList *l, int v)
 {
-    Pacient* patient = (Pacient*)malloc(sizeof(Pacient));
-    assert(patient != NULL);  // Garante que a alocação de memória foi bem-sucedida
     ListNode *p = l->first;
     while (p != NULL)
     {
-        if (p->info->id == v)
-            return patient ;
+        if (p->info->id == v){
+            return p->info;
+        }
         p = p->next;
     }
     return NULL;
