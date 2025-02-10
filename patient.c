@@ -10,8 +10,8 @@ struct pacient
 {
     int id;             // Variável responsável pelo ID do paciente.
     char cpf[15];       // Variável responsável pelo CPF do paciente.
-    char name[100];     // Variável responsável pelo nome do paciente.
-    char age[5];        // Variável responsável pela idade do paciente
+    char name[100];     // Variável responsável pelo nome do paciente. 
+    char age[5];        // Variável responsável pela idade do paciente. 
     char year[20];      // Variável responsável pela data de cadastro do paciente. **MUDAR NOME DA VARIÁVEL
 };
 
@@ -94,7 +94,7 @@ Pacient* update_patient(LinkedList *l, int id)
     Pacient* patient = (Pacient*)malloc(sizeof(Pacient));
     assert(patient != NULL);  // Garante que a alocação de memória foi bem-sucedida
 
-    printf("Digite o novo valor para os campos CPF (apenas dígitos), Nome, Idade e Data_Cadastro (para manter o valor atual de um campo, digite '-'):\n");
+    printf("Digite o novo valor para os campos CPF (apenas digitos), Nome, Idade e Data_Cadastro (para manter o valor atual de um campo, digite '-'):\n");
     
     patient = ll_is_in(l,id);                //Busca e seleciona o paciente na lista tendo como critério o ID fornecido.
     if (patient != NULL){
@@ -105,10 +105,7 @@ Pacient* update_patient(LinkedList *l, int id)
 
         scanf("%11s", new_cpf);              // Entrada de dados do novo cpf para atualização.
         getchar();                           // Consume o '\n'(Limpeza do Buffer)
-        if (ll_cpf_is_in(l,new_cpf) == 0)    // Verificação com o novo CPF dado e informa se já existe.
-        {
-            printf("CPF JA EXISTENTE.");
-        }
+
         if (strcmp(new_cpf, "-") != 0)          // Verificação caso o usuário deseja ou não atualizar o CPF do paciente.
         {
             strcpy(patient->cpf, new_cpf);

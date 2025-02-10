@@ -77,9 +77,8 @@ int main(void)
             int id_patient;
             ll_print(list);
             printf("Digite o ID do registro a ser atualizado:\n");
-            scanf("%d",&id_patient);
+            scanf(" %d",&id_patient);
             Pacient* patient = update_patient(list, id_patient);
-            printf("\n");
             printf("Confirma os novos valores para o registro abaixo? (S/N)\n");
             print_patient(patient);
             scanf(" %c", &escolha);  // A correção aqui é o espaço antes de %c
