@@ -16,7 +16,7 @@ int main(void)
         return 1;
     }
     inserir_dados_csv(list);
-    id = contar_id(filename);
+    id = random_id(list);
 
     char escolha;
     int sair = 0;
@@ -85,11 +85,11 @@ int main(void)
 
             if (escolha == 'S')
             {
+                ll_remove(list,id_patient);
                 ll_insert(list, patient);
                 escrever_arquivo_csv(patient);
                 fflush(filename);  // Garante que o conteúdo seja gravado imediatamente no arquivo
                 printf("Registro atualizado com sucesso.\n");
-                id++;
             }
             else
             {
@@ -98,7 +98,21 @@ int main(void)
         }
         if (opcao_menu == '3')
         {
-            /* Remover */
+            int excluir_id;
+            printf("Digite o ID do registro a ser removido: ");
+            scanf("%d",&excluir_id);
+            ll_id_is_in(list,excluir_id);
+            printf("Tem certeza de que deseja excluir o registro abaixo? (S/N): ");
+            scanf(" %c", &escolha); 
+            if(escolha=='S')
+            {
+                ll_remove(list, excluir_id);
+            }
+            if(escolha=='N')
+            {
+                printf("Processo cancelado.\n");
+            }
+            //ll_remove(list, id);
         }
         if (opcao_menu == '4')
         {

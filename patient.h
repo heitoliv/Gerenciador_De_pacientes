@@ -25,9 +25,6 @@ void formatar_cpf(Pacient *patient);
 //Definição da função de atualização do paciente
 Pacient* update_patient(LinkedList *l, int id);
 
-//Definição da função de remoção de um elemento da lista encadeada.
-int ll_remove(LinkedList *l, int v);
-
 //Definição da função de desalocar memória da lista encadeada
 void ll_free(LinkedList *l);
 
@@ -54,9 +51,18 @@ int ll_cpf_is_in(LinkedList *l,char *cpf);
 
 int escrever_arquivo_csv(Pacient *patient);
 
-int contar_id();
+// int contar_id();
+
+int random_id(LinkedList *l);
 
 int inserir_dados_csv(LinkedList *l);
+
+//Definição da função de remoção de um elemento da lista encadeada.
+int ll_remove(LinkedList *l, int id);//lista e id 
+
+int csv_remove(LinkedList *l, int id);
+
+int ll_id_is_in(LinkedList *l,int id);
 
 //Definição da função se o paciente está contido na lista ou não
 Pacient* ll_is_in(LinkedList *l, int v);

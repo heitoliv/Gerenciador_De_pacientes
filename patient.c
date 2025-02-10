@@ -4,6 +4,7 @@
 #include <string.h>
 #include <time.h>
 #include <assert.h>
+#include <ctype.h>
 
 //Definição da estrutura que representa o paciente
 struct pacient
@@ -198,7 +199,8 @@ int ll_cpf_is_in(LinkedList *l,char *cpf){//veriica se o cpf existe
     while (p != NULL)
     {
         if (strcmp(p->info->cpf, cpf) == 0){ //cpf precisam ser iguais
-            print_patient(p->info);}
+            print_patient(p->info);
+        }
         p = p->next;
     }
     return 0;
@@ -247,31 +249,45 @@ void ll_free(LinkedList *l)
     free(l); // Free the memory allocated for the list structure itself.
 }
 
-//Função responsável para a contagem dos pacientes no sistema e armazenando no campo correspondente ao ID do paciente.
-int contar_id() {
-    char ch;
-    int line_count = 0;
-    FILE *file;
-    
-    // Abrir o arquivo CSV
-    file = fopen("bd_paciente.csv", "r");
-    if (file == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-            return -1; // Retorne um valor de erro apropriado
-     }
+int ll_id_is_in(LinkedList *l,int id){//veriica se o id existe
+    ListNode *p = l->first;
+    while (p != NULL)
+    {
+        if (p->info->id==id){ //id precisam ser iguais
+            print_patient(p->info);}
+        p = p->next;
+    }
+    return 0;
+}
 
-    // Ler o arquivo caractere por caractere
-     while ((ch = fgetc(file)) != EOF) {
-        // Incrementar a contagem sempre que encontrar uma nova linha
-        if (ch == '\n') {
-               line_count++;
-         }
-      }
+int random_id(LinkedList *l) {
+    srand(time(NULL));  // Inicializa o gerador de números aleatórios com a hora atual
+    int min = 0, max = 1000;  // Define o intervalo de números aleatórios (entre 0 e 1000)
+    int numero;  // Variável para armazenar o número gerado
+
+    // Loop principal: continua até encontrar um número único
+    while (1) {
+        numero = min + rand() % (max - min + 1);  // Gera um número aleatório dentro do intervalo [min, max]
+
+        ListNode *p = l->first;  // Ponteiro para percorrer a lista encadeada
+        int encontrado = 0;  // Flag para verificar se o número já está na lista
+
+        // Percorre a lista para verificar se o número já existe
+        while (p != NULL) {
+            if (p->info->id == numero) {  // Se o número já existir na lista
+                encontrado = 1;  // Marca como encontrado
+                break;  // Sai do loop
+            }
+            p = p->next;  // Avança para o próximo nó na lista
+        }
+
+        // Se o número não foi encontrado, sai do loop principal e retorna o número
+        if (!encontrado) {
+            break;  // Sai do loop principal
+        }
+    }
     
-    // Fechar o arquivo
-    line_count++;
-    fclose(file);
-    return line_count;
+    return numero;  // Retorna o número único gerado
 }
 
 int escrever_arquivo_csv(Pacient *patient){
@@ -343,3 +359,93 @@ int inserir_dados_csv(LinkedList *l) {
     fclose(file);  // Fechar o arquivo após a leitura
     return 0;  // Retorna sucesso
 }
+
+int ll_remove(LinkedList *l, int id)//lista e id 
+{
+    ListNode *p = l->first; // Pointer to the current node being examined
+    ListNode *prev = NULL;  // Pointer to the previous node
+
+    // Traverse the list
+    while (p != NULL)
+    {
+        // Check if the current node contains the element to be removed
+        if (p->info->id == id)
+        {
+            // If the element to be removed is at the beginning of the list
+            if (prev == NULL)
+                l->first = p->next; // Update the 'first' pointer to skip the first node
+            // If the element to be removed is in the middle or end of the list
+            else
+                prev->next = p->next; // Update the 'next' pointer of the previous node
+
+            
+            csv_remove(l,id);
+            free(p);  // Deallocate memory occupied by the removed node
+            return 1; // retorna lista sem o elemento
+
+        }
+        else
+        {
+            prev = p;    // Update the 'prev' pointer
+            p = p->next; // Move to the next node
+        }
+    }
+
+    return 0; // Indicate that the element was not found
+}
+
+int csv_remove(LinkedList *l, int id){
+    FILE *file = fopen("bd_paciente.csv", "w");
+    if (!file) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return 1;
+    }
+
+    ListNode *p = l->first;
+    
+    while (p != NULL) {
+        if (p->info->id != id) {  // Escreve todos os pacientes, exceto o que queremos remover
+            fprintf(file, "%d,%s,%s,%s,%s\n", p->info->id, p->info->cpf, p->info->name, p->info->age, p->info->year);
+        }
+        p = p->next;
+    }
+
+    fclose(file);
+    return 0;
+
+}
+
+// char linha[256];
+//     int line_count = 1;
+//     FILE *file;
+    
+//     // Abrir o arquivo CSV
+//     file = fopen("bd_paciente.csv", "r");
+//     if (file == NULL) {
+//         printf("Erro ao abrir o arquivo.\n");
+//         return -1;         // Retorne um valor de erro apropriado
+//     }
+
+//     // Ler o arquivo linha por linha
+//     while (fgets(linha, sizeof(linha), file) != NULL) {
+//         // Remove espaços em branco do início e do fim da linha
+//         char *start = linha;
+//         while (isspace((unsigned char)*start)) {
+//             start++;
+//         }
+//         char *end = linha + strlen(linha) - 1;
+//         while (end > start && isspace((unsigned char)*end)) {
+//             end--;
+//         }
+//         *end = '\0';
+
+//         // Incrementa a contagem se a linha não estiver vazia
+//         if (strlen(start) > 0) {
+//             line_count++;
+//         }
+//     }
+
+//     // Fechar o arquivo
+//     fclose(file);
+//     printf("%d\n", line_count);
+//     return line_count;
