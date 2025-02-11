@@ -21,8 +21,6 @@ int ll_is_empty(LinkedList *l);
 
 void ll_insert(LinkedList *l, Pacient *pacients);
 
-int get_id(Pacient *pacient);
-
 Pacient* ll_is_in(LinkedList *l, int v);
 
 int ll_nome_is_in(LinkedList *l, char *nome);

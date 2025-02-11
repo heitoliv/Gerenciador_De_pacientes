@@ -20,11 +20,11 @@
 */
 struct pacient
 {
-    int id;             // Variável responsável pelo ID do paciente.
-    char cpf[15];       // Variável responsável pelo CPF do paciente.
-    char name[100];     // Variável responsável pelo nome do paciente. 
-    char age[5];        // Variável responsável pela idade do paciente. **MUDAR PARA O INT
-    char year[20];      // Variável responsável pela data de cadastro do paciente. **MUDAR NOME DA VARIÁVEL
+    int id;             
+    char cpf[15];       
+    char name[100];     
+    char age[5];        
+    char year[20];      
 };
 
 
@@ -58,6 +58,8 @@ struct list_node
 
 /*
     @brief Função responsável pela criação de uma lista encadeada vazia e retorna um ponteiro.
+
+    @return Retorna um ponteiro para a estrutura da lista encadeada.
 */
 LinkedList *ll_create()
 {
@@ -98,7 +100,7 @@ char *formatar_cpf(Pacient *patient) {
     @param id -> Parâmetro que recebe o ID do paciente.
     @param l -> Recebe a lista encadeada. 
 
-    @return  Retorna um ponteiro a estrutura do paciente. 
+    @return  Retorna um ponteiro para a estrutura do paciente. 
 */
 Pacient* new_pacient(int id,LinkedList *l) {
     // char cpf[15];
@@ -143,7 +145,7 @@ Pacient* new_pacient(int id,LinkedList *l) {
     @param l -> Recebe a lista encadeada. 
     @param id -> Parâmetro que recebe o ID do paciente.
 
-    @return  Retorna um ponteiro a estrutura do paciente. 
+    @return  Retorna um ponteiro para a estrutura do paciente. 
 */
 Pacient* update_patient(LinkedList *l, int id)
 {
@@ -214,7 +216,6 @@ void print_patient(Pacient *patient)
     printf("%-3d %-15s %-20s %-10s %-12s\n", patient->id, cpf_formatado, patient->name, patient->age, patient->year);
 }
 
-// Function to check whether the linked list is empty.
 /*
     @brief Função responsável para atribuir uma lista encadeada vazia.
 
@@ -224,7 +225,7 @@ void print_patient(Pacient *patient)
 */
 int ll_is_empty(LinkedList *l)
 {
-    return l->first == NULL; // Check if the 'first' pointer is NULL, indicating an empty list.
+    return l->first == NULL; 
 }
 
 
@@ -236,27 +237,15 @@ int ll_is_empty(LinkedList *l)
 */
 void ll_insert(LinkedList* l, Pacient* patient)
 {
-    ListNode *node = (ListNode *)malloc(sizeof(ListNode)); // Allocate memory for a new node.
-    node->info = patient;                                        // Set the 'info' field of the new node to the provided value.
-    node->next = l->first;                                 // Make the new node point to the current first node.
-    l->first = node;                                       // Update the 'first' pointer to point to the new node.
+    ListNode *node = (ListNode *)malloc(sizeof(ListNode)); 
+    node->info = patient;                                        
+    node->next = l->first;                                 
+    l->first = node;                                       
 }
 
-//Função que obtem o ID do paciente.
-/*
-    @brief Função para receber o ID do paciente
-
-    @param patient -> Recebe um ponteiro para a estrutura do pacient (Pacient)
-
-    @return  Retorna o ID do paciente
-*/
-int get_id(Pacient *pacient)
-{
-    return pacient->id;
-}
 
 /*
-    @brief Função para verificar se um elemnto está na lista encadeada
+    @brief Função para verificar se um elemento está na lista encadeada
 
     @param l -> Recebe um ponteiro para a lista encadeada.
     @param patient -> Recebe um ponteiro para a estrutura do pacient (Pacient)
@@ -380,7 +369,7 @@ void ll_free(LinkedList *l)
     @param l -> Recebe um ponteiro para a estrutura da lista encadeada.
     @param id -> Parâmetro que recebe o ID do paciente.
 
-    @return  Retorna 0 indicando que a execução da função foi bem sucedida.
+    @return  Retorna 0 se não o paciente buscado não está existente, caso contrário retorna 1.
 */
 int ll_id_is_in(LinkedList *l,int id){
     ListNode *p = l->first;
@@ -436,10 +425,9 @@ int random_id(LinkedList *l) {
 
     @param patient -> Recebe um ponteiro para a estrutura do paciente (Pacient).
 
-    @return  Retorna 0 indicando que a execução da função foi bem sucedida.
+    @return  Retorna 0 indicando que a execução da função foi bem sucedida, caso conrario retorna 1.
 */
 int escrever_arquivo_csv(Pacient *patient){
-    //char *cpf_formatado;
     FILE *file;
     file = fopen("bd_paciente.csv", "a");
 
@@ -454,11 +442,11 @@ int escrever_arquivo_csv(Pacient *patient){
 }
 
 /*
-    @brief Função para inserir os dados do paciente no arquivo em formato de csv.
+    @brief Função para inicializar a lista encadeada com os dados já existentes no arquivo em formato de csv
 
     @param patient -> Recebe um ponteiro para a estrutura do paciente (Pacient).
 
-    @return Retorna 0 indicando que a execução da função foi bem sucedida.
+    @return Retorna 0 indicando que a execução da função foi bem sucedida, caso contrário retorna 1.
 */
 int inserir_dados_csv(LinkedList *l) {
     FILE *file = fopen("bd_paciente.csv", "r");  // Modo de leitura do arquivo
@@ -469,8 +457,6 @@ int inserir_dados_csv(LinkedList *l) {
 
     char line[1024];  // Buffer para armazenar cada linha do arquivo
 
-    // Ler e ignorar a primeira linha (cabeçalho)
-    //fgets(line, sizeof(line), file);
 
     // Ler o arquivo linha por linha
     while (fgets(line, sizeof(line), file)) {
@@ -516,7 +502,7 @@ int inserir_dados_csv(LinkedList *l) {
 }
 
 /*
-    @brief Função para remover um elemnto da lista encadeada.
+    @brief Função para remover um elemento da lista encadeada.
 
     @param l -> Recebe um ponteiro para a estrutura da lista encadeada.
     @param id -> Parâmetro que recebe o ID do paciente.
