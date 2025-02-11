@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <time.h>
 
 int id;
 int main(void)
@@ -135,7 +134,7 @@ int main(void)
         {
             printf("Opcao invalida! Tente novamente.\n");//nao ficar abrindo toda hora o menu
         }
-        
+
         printf("\n");
     }
         fclose(filename);  // Fechar o arquivo após terminar a manipulação
